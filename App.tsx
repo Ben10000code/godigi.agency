@@ -9,7 +9,7 @@ import BackToTopButton from './components/BackToTopButton';
 import { Plan, SiteSettings, ContactDetails } from './types';
 import { SunIcon, MoonIcon, ComputerDesktopIcon } from './components/IconComponents';
 
-// Define a type for the structure of the content fetched from Airtable.
+// Define a type for the structure of the content fetched from our API.
 interface AppContent {
   siteSettings: SiteSettings;
   portfolioMarquee: {
@@ -74,22 +74,10 @@ const AnimateOnScroll: React.FC<{children: React.ReactNode, delay?: string}> = (
     );
 };
 
-// Helper to fetch and transform a table from Airtable
-const fetchAirtableTable = async (tableName: string, baseId: string, apiKey: string) => {
-    // Sort by 'order' field if it exists, Airtable ignores if it doesn't.
-    const sortParam = 'sort%5B0%5D%5Bfield%5D=order&sort%5B0%5D%5Bdirection%5D=asc';
-    const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}?${sortParam}`, {
-        headers: { Authorization: `Bearer ${apiKey}` }
-    });
-    if (!res.ok) throw new Error(`Failed to fetch ${tableName}: ${res.statusText}`);
-    const data = await res.json();
-    return data.records.map((rec: any) => rec.fields);
-};
-
 
 /**
  * The main application component.
- * It now fetches content from Airtable and includes a full Dark Mode implementation.
+ * It now fetches content from a secure serverless proxy and includes a full Dark Mode implementation.
  */
 const App: React.FC = () => {
   const [content, setContent] = useState<AppContent | null>(null);
@@ -132,74 +120,27 @@ const App: React.FC = () => {
     const fetchContent = async () => {
       setIsLoading(true);
       setError(null);
-      const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
-      const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
-
-      if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
-        setError("Airtable API Key or Base ID is not configured. Please set them as environment variables.");
-        setIsLoading(false);
-        return;
-      }
 
       try {
-        const tableNames = ['SiteSettings', 'PageContent', 'PortfolioImages', 'PricingPlans', 'Testimonials', 'FAQ', 'Contact'];
-        const [
-            siteSettingsRecs, pageContentRecs, portfolioImagesRecs, pricingPlansRecs,
-            testimonialsRecs, faqRecs, contactRecs
-        ] = await Promise.all(tableNames.map(table => fetchAirtableTable(table, AIRTABLE_BASE_ID, AIRTABLE_API_KEY)));
+        const response = await fetch('/api/airtable');
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({})); // Catch if JSON parsing fails
+          throw new Error(errorData.error || `Error: ${response.status} ${response.statusText}`);
+        }
+        
+        const formattedContent: AppContent = await response.json();
 
-        const siteSettings = siteSettingsRecs[0];
-        const pageContent = pageContentRecs[0];
-        const contactDetails = contactRecs[0];
-
-        const formattedContent: AppContent = {
-            siteSettings: {
-                backgroundPattern: siteSettings.backgroundPattern,
-                brandColor: siteSettings.brandColor,
-            },
-            portfolioMarquee: {
-                title: pageContent.portfolioTitle,
-                images: portfolioImagesRecs.map((rec: any) => rec.url),
-            },
-            pricing: {
-                title: pageContent.pricingTitle,
-                subtitle: pageContent.pricingSubtitle,
-                plans: pricingPlansRecs.map((plan: any) => ({
-                    ...plan,
-                    features: plan.features ? plan.features.split('\n').filter(Boolean) : [],
-                    notIncluded: plan.notIncluded ? plan.notIncluded.split('\n').filter(Boolean) : [],
-                })),
-                testimonials: {
-                    title: pageContent.testimonialsTitle,
-                    items: testimonialsRecs,
-                },
-            },
-            faq: {
-                title: pageContent.faqTitle,
-                subtitle: pageContent.faqSubtitle,
-                items: faqRecs,
-            },
-            contact: {
-                title: contactDetails.title,
-                subtitle: contactDetails.subtitle,
-                email: contactDetails.email,
-                secondaryEmail: contactDetails.secondaryEmail,
-                phone: contactDetails.phone,
-                whatsappNumber: contactDetails.whatsappNumber,
-                whatsappPrefill: contactDetails.whatsappPrefill,
-                hours: {
-                    line1: contactDetails.hoursLine1,
-                    line2: contactDetails.hoursLine2,
-                    line3: contactDetails.hoursLine3,
-                },
-            },
-        };
         setContent(formattedContent);
         if (formattedContent.pricing?.plans?.length > 0) {
-            setSelectedPlan(formattedContent.pricing.plans[0]);
+            // Sort plans by order before setting the default
+            const sortedPlans = [...formattedContent.pricing.plans].sort((a, b) => (a.order || 0) - (b.order || 0));
+            setSelectedPlan(sortedPlans[0]);
+            // update content with sorted plans
+            setContent(prevContent => prevContent ? {...prevContent, pricing: {...prevContent.pricing, plans: sortedPlans}} : null);
         }
+
       } catch (err) {
-        console.error("Failed to fetch and parse content from Airtable:", err);
+        console.error("Failed to fetch and parse content:", err);
         setError(err instanceof Error ? err.message : "An unknown error occurred while fetching content.");
       } finally {
         setIsLoading(false);
@@ -294,7 +235,7 @@ const App: React.FC = () => {
         <div className="flex justify-center items-center min-h-screen px-4">
             <div className="text-center">
                 <h1 className="text-2xl font-bold text-red-600">Failed to load website content.</h1>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">Please ensure your Airtable configuration is correct and try again later.</p>
+                <p className="mt-2 text-gray-600 dark:text-gray-400">Please ensure your deployment configuration is correct and try again later.</p>
                 {error && <pre className="mt-4 text-left bg-gray-100 dark:bg-gray-800 p-4 rounded-md text-sm text-red-500 overflow-auto">{error}</pre>}
             </div>
         </div>

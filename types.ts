@@ -8,6 +8,7 @@ export interface Plan {
   notIncluded: string[];
   isFeatured?: boolean;
   value: string; // This should match a value in the form's budget dropdown
+  order?: number;
 }
 
 /**
