@@ -12,83 +12,30 @@ The website content is managed entirely through **Airtable**, acting as a headle
 
 To get this site running, you need to set up an Airtable base and configure your deployment environment (e.g., Vercel) with the correct API keys.
 
-### **Step 1: Set Up Your Airtable Base**
+### **Step 1: Set Up Your Airtable Base (The Easy Way)**
+
+The fastest way to set up your base is to import the provided CSV files. This will automatically create all the necessary tables and fields for you.
 
 1.  **Create an Airtable Account:** If you don't have one, sign up at [airtable.com](https://airtable.com).
-2.  **Create a New Base:** Start a new base from scratch.
-3.  **Create the Required Tables:** You must create the following tables with the exact names and fields specified below. The field type in Airtable is shown in parentheses.
+2.  **Create a New Base:** From your dashboard, click "Add a base" and choose "Start from scratch".
+3.  **Import CSV Files:**
+    - In your new base, click the `+` icon next to your first table tab, then select "Import data".
+    - Choose "CSV file".
+    - Upload the `SiteSettings.csv` file from the `airtable_csv` directory in this project.
+    - Airtable will preview the data. Click **"Import"**. This will create your first table.
+    - **Repeat this process for all 7 CSV files** in the `airtable_csv` directory:
+        - `PageContent.csv`
+        - `PortfolioImages.csv`
+        - `PricingPlans.csv`
+        - `Testimonials.csv`
+        - `FAQ.csv`
+        - `Contact.csv`
+4.  **Verify Field Types (Important!):** After importing, quickly check a few key fields to ensure Airtable assigned the correct type.
+    - In `PricingPlans`, make sure the `isFeatured` field is a **Checkbox**.
+    - In `SiteSettings`, make sure the `backgroundPattern` field is **Single select** (with options: `crosses`, `dots`, `none`).
+    - If a type is wrong, click the dropdown arrow next to the field name, select "Edit field", and change its type.
 
----
-
-#### **Table 1: `SiteSettings`**
-*This table should have exactly one record.*
-- `key` (Single line text) - The primary field. Enter `settings`.
-- `backgroundPattern` (Single select) - Options: `crosses`, `dots`, `none`.
-- `brandColor` (Single line text) - Enter a hex color code, e.g., `#8AF003`.
-
----
-
-#### **Table 2: `PageContent`**
-*This table should have exactly one record.*
-- `key` (Single line text) - The primary field. Enter `main`.
-- `portfolioTitle` (Single line text) - e.g., `A Glimpse of My Work`
-- `pricingTitle` (Single line text) - e.g., `Simple, Transparent Pricing`
-- `pricingSubtitle` (Long text) - e.g., `Start with a free homepage, then choose a plan...`
-- `testimonialsTitle` (Single line text) - e.g., `Hear From My Happy Clients`
-- `faqTitle` (Single line text) - e.g., `Frequently Asked Questions`
-- `faqSubtitle` (Long text) - e.g., `Have questions? I've got answers...`
-
----
-
-#### **Table 3: `PortfolioImages`**
-*Each record is one image in the portfolio marquee.*
-- `url` (URL) - The primary field. Paste the direct URL to your image.
-- `order` (Number) - A number to set the display order (e.g., 1, 2, 3...).
-
----
-
-#### **Table 4: `PricingPlans`**
-*Each record is a pricing card.*
-- `name` (Single line text) - The primary field (e.g., `🚀 STARTER SITE`).
-- `price` (Single line text) - e.g., `R1,500 - R2,500`.
-- `features` (Long text) - List each feature on a new line.
-- `notIncluded` (Long text) - List each item on a new line.
-- `isFeatured` (Checkbox) - Check this for the recommended plan.
-- `value` (Single line text) - A value for the form (e.g., `free`, `1500-2500`).
-- `order` (Number) - The display order for the plans.
-
----
-
-#### **Table 5: `Testimonials`**
-*Each record is a client testimonial.*
-- `author` (Single line text) - The primary field. The person's name.
-- `quote` (Long text) - The full quote.
-- `location` (Single line text) - e.g., `Ndlovu's Fine Meats, Soweto`.
-- `order` (Number) - The display order.
-
----
-
-#### **Table 6: `FAQ`**
-*Each record is one question-and-answer pair.*
-- `question` (Single line text) - The primary field. The full question.
-- `answer` (Long text) - The full answer.
-- `order` (Number) - The display order.
-
----
-
-#### **Table 7: `Contact`**
-*This table should have exactly one record.*
-- `key` (Single line text) - The primary field. Enter `contactInfo`.
-- `title` (Single line text) - e.g., `Get in Touch`.
-- `subtitle` (Long text)
-- `email` (Email)
-- `secondaryEmail` (Email) - *Optional*.
-- `phone` (Phone number)
-- `whatsappNumber` (Single line text) - Numbers only, with country code. e.g., `27734422054`.
-- `whatsappPrefill` (Single line text) - The default message for WhatsApp.
-- `hoursLine1` (Single line text) - Supports `<strong>` tags for bold text.
-- `hoursLine2` (Single line text)
-- `hoursLine3` (Single line text)
+Your base is now set up! Proceed to Step 2.
 
 ---
 
@@ -118,14 +65,14 @@ To get this site running, you need to set up an Airtable base and configure your
       - `AIRTABLE_API_KEY`: Paste the Personal Access Token you created.
 4.  Deploy! Your website should now be live and fetching content directly from your Airtable base.
 
+---
+
 ### **Important: Image Optimization for Speed**
 
 Before adding images to Airtable, **compress them**. Large images are the biggest cause of slow websites.
 
 1.  **Compress:** Use a free online tool like [TinyPNG](https://tinypng.com/) or [Squoosh](https://squoosh.app/) to reduce file size.
 2.  **Resize:** Resize images to be close to their final display size (e.g., 800px wide for portfolio images).
-
----
 
 ### **Dark Mode**
 
