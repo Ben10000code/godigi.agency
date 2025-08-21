@@ -14,6 +14,8 @@ interface PricingTierProps {
 }
 
 interface PricingStrategyProps {
+  title: string;
+  subtitle: string;
   plans: Plan[];
   testimonials: {
       title: string;
@@ -75,15 +77,15 @@ const PricingTier: React.FC<PricingTierProps> = ({ plan, onPlanSelect }) => (
  * The main section that displays the pricing strategy, including the pricing grid and testimonials.
  * All content is passed in via props.
  */
-const PricingStrategy: React.FC<PricingStrategyProps> = ({ plans, testimonials, onPlanSelect }) => {
+const PricingStrategy: React.FC<PricingStrategyProps> = ({ title, subtitle, plans, testimonials, onPlanSelect }) => {
   return (
     <section className="w-full">
        <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-extrabold text-black dark:text-white">
-                Simple, Transparent Pricing
+                {title}
             </h2>
             <p className="mt-4 max-w-3xl mx-auto text-lg text-gray-600 dark:text-gray-400">
-                Start with a free homepage, then choose a plan that fits your business as you grow. No hidden fees, ever.
+                {subtitle}
             </p>
         </div>
 

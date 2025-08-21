@@ -9,7 +9,7 @@ import BackToTopButton from './components/BackToTopButton';
 import { Plan, SiteSettings, ContactDetails } from './types';
 import { SunIcon, MoonIcon, ComputerDesktopIcon } from './components/IconComponents';
 
-// Define a type for the structure of the content.json file for better type safety.
+// Define a type for the structure of the content fetched from Airtable.
 interface AppContent {
   siteSettings: SiteSettings;
   portfolioMarquee: {
@@ -17,12 +17,22 @@ interface AppContent {
     images: string[];
   };
   pricing: {
+    title: string;
+    subtitle: string;
     plans: Plan[];
-    testimonials: any;
+    testimonials: {
+      title: string;
+      items: any[];
+    }
   };
-  faq: any;
+  faq: {
+    title: string;
+    subtitle: string;
+    items: any[];
+  };
   contact: ContactDetails;
 }
+
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -64,14 +74,27 @@ const AnimateOnScroll: React.FC<{children: React.ReactNode, delay?: string}> = (
     );
 };
 
+// Helper to fetch and transform a table from Airtable
+const fetchAirtableTable = async (tableName: string, baseId: string, apiKey: string) => {
+    // Sort by 'order' field if it exists, Airtable ignores if it doesn't.
+    const sortParam = 'sort%5B0%5D%5Bfield%5D=order&sort%5B0%5D%5Bdirection%5D=asc';
+    const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}?${sortParam}`, {
+        headers: { Authorization: `Bearer ${apiKey}` }
+    });
+    if (!res.ok) throw new Error(`Failed to fetch ${tableName}: ${res.statusText}`);
+    const data = await res.json();
+    return data.records.map((rec: any) => rec.fields);
+};
+
 
 /**
  * The main application component.
- * It now includes a full Dark Mode implementation with a theme toggle.
+ * It now fetches content from Airtable and includes a full Dark Mode implementation.
  */
 const App: React.FC = () => {
   const [content, setContent] = useState<AppContent | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [theme, setTheme] = useState<Theme>('system');
   const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
@@ -107,18 +130,77 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const fetchContent = async () => {
+      setIsLoading(true);
+      setError(null);
+      const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+      const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+
+      if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
+        setError("Airtable API Key or Base ID is not configured. Please set them as environment variables.");
+        setIsLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch('./content.json');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        const tableNames = ['SiteSettings', 'PageContent', 'PortfolioImages', 'PricingPlans', 'Testimonials', 'FAQ', 'Contact'];
+        const [
+            siteSettingsRecs, pageContentRecs, portfolioImagesRecs, pricingPlansRecs,
+            testimonialsRecs, faqRecs, contactRecs
+        ] = await Promise.all(tableNames.map(table => fetchAirtableTable(table, AIRTABLE_BASE_ID, AIRTABLE_API_KEY)));
+
+        const siteSettings = siteSettingsRecs[0];
+        const pageContent = pageContentRecs[0];
+        const contactDetails = contactRecs[0];
+
+        const formattedContent: AppContent = {
+            siteSettings: {
+                backgroundPattern: siteSettings.backgroundPattern,
+                brandColor: siteSettings.brandColor,
+            },
+            portfolioMarquee: {
+                title: pageContent.portfolioTitle,
+                images: portfolioImagesRecs.map((rec: any) => rec.url),
+            },
+            pricing: {
+                title: pageContent.pricingTitle,
+                subtitle: pageContent.pricingSubtitle,
+                plans: pricingPlansRecs.map((plan: any) => ({
+                    ...plan,
+                    features: plan.features ? plan.features.split('\n').filter(Boolean) : [],
+                    notIncluded: plan.notIncluded ? plan.notIncluded.split('\n').filter(Boolean) : [],
+                })),
+                testimonials: {
+                    title: pageContent.testimonialsTitle,
+                    items: testimonialsRecs,
+                },
+            },
+            faq: {
+                title: pageContent.faqTitle,
+                subtitle: pageContent.faqSubtitle,
+                items: faqRecs,
+            },
+            contact: {
+                title: contactDetails.title,
+                subtitle: contactDetails.subtitle,
+                email: contactDetails.email,
+                secondaryEmail: contactDetails.secondaryEmail,
+                phone: contactDetails.phone,
+                whatsappNumber: contactDetails.whatsappNumber,
+                whatsappPrefill: contactDetails.whatsappPrefill,
+                hours: {
+                    line1: contactDetails.hoursLine1,
+                    line2: contactDetails.hoursLine2,
+                    line3: contactDetails.hoursLine3,
+                },
+            },
+        };
+        setContent(formattedContent);
+        if (formattedContent.pricing?.plans?.length > 0) {
+            setSelectedPlan(formattedContent.pricing.plans[0]);
         }
-        const data: AppContent = await response.json();
-        setContent(data);
-        if (data.pricing?.plans?.length > 0) {
-          setSelectedPlan(data.pricing.plans[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch and parse content.json:", error);
+      } catch (err) {
+        console.error("Failed to fetch and parse content from Airtable:", err);
+        setError(err instanceof Error ? err.message : "An unknown error occurred while fetching content.");
       } finally {
         setIsLoading(false);
       }
@@ -207,10 +289,14 @@ const App: React.FC = () => {
     );
   }
 
-  if (!content) {
+  if (error || !content) {
     return (
-        <div className="flex justify-center items-center min-h-screen">
-            <div className="text-lg font-semibold text-red-600">Failed to load website content. Please try again later.</div>
+        <div className="flex justify-center items-center min-h-screen px-4">
+            <div className="text-center">
+                <h1 className="text-2xl font-bold text-red-600">Failed to load website content.</h1>
+                <p className="mt-2 text-gray-600 dark:text-gray-400">Please ensure your Airtable configuration is correct and try again later.</p>
+                {error && <pre className="mt-4 text-left bg-gray-100 dark:bg-gray-800 p-4 rounded-md text-sm text-red-500 overflow-auto">{error}</pre>}
+            </div>
         </div>
     );
   }
@@ -234,6 +320,8 @@ const App: React.FC = () => {
           <AnimateOnScroll>
             <div id="pricing-section" className="w-full max-w-7xl mx-auto">
                 <PricingStrategy 
+                title={pricing.title}
+                subtitle={pricing.subtitle}
                 plans={pricing.plans} 
                 testimonials={pricing.testimonials} 
                 onPlanSelect={handlePlanSelect} 
@@ -250,7 +338,7 @@ const App: React.FC = () => {
            <AnimateOnScroll>
                 <div id="contact-section" className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start">
                     <div className="lg:col-span-2">
-                    <FAQ items={faq.items} />
+                    <FAQ title={faq.title} subtitle={faq.subtitle} items={faq.items} />
                     </div>
                     <div className="lg:col-span-1">
                     <Contact details={contact} />

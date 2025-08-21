@@ -8,6 +8,8 @@ interface FAQItemProps {
 }
 
 interface FAQProps {
+  title: string;
+  subtitle: string;
   items: { question: string; answer: string }[];
 }
 
@@ -49,15 +51,15 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, id }) => {
  * The FAQ section component.
  * It maps over the data passed via props and renders a list of FAQItem components.
  */
-const FAQ: React.FC<FAQProps> = ({ items }) => {
+const FAQ: React.FC<FAQProps> = ({ title, subtitle, items }) => {
   return (
     <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 lg:p-10 shadow-xl">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl font-extrabold text-black dark:text-white text-center">
-          Frequently Asked Questions
+          {title}
         </h2>
         <p className="mt-4 text-gray-600 dark:text-gray-400 text-center">
-          Have questions? I've got answers. Here are some of the most common things people ask.
+          {subtitle}
         </p>
         <div className="mt-8">
           {items.map((item, index) => (

@@ -4,103 +4,129 @@ This project is a modern, high-converting lead generation landing page for godig
 
 The primary strategy is to offer a high-value, risk-free "Free Homepage" to attract small business clients, build trust, and then upsell to full website packages.
 
-## How to Update Website Content (The Easy Way)
-
-This site is designed for incredibly simple updates. **Almost all website text, images, and settings are managed from a single file: `content.json`**.
-
-To change any content on the website, you only need to open and edit `content.json`.
+The website content is managed entirely through **Airtable**, acting as a headless CMS. This allows for instant content updates without changing any code.
 
 ---
 
-### **1. Updating Global Site Settings**
+## 🚀 How to Deploy & Manage Content with Airtable
 
-This section controls the overall look and feel of your site.
+To get this site running, you need to set up an Airtable base and configure your deployment environment (e.g., Vercel) with the correct API keys.
 
-#### **Updating Your Brand Color**
-- Find the `siteSettings` section at the top of `content.json`.
-- Edit the value of the `brandColor` property.
-- You can use any valid CSS hex color (e.g., `"#8AF003"`, `"#4F46E5"`, `"#ff5733"`).
-- This one setting will change the color of the favicon, header pill, featured plan, loading spinner, and all accent icons.
+### **Step 1: Set Up Your Airtable Base**
 
-#### **Changing the Background Pattern**
-- Find the `siteSettings` section at the top of `content.json`.
-- Edit the value of the `backgroundPattern` property.
-- **Available Options:**
-  - `"crosses"`: A subtle pattern of small 'x' marks.
-  - `"dots"`: A subtle pattern of small dots.
-  - `"none"`: A clean, solid background.
+1.  **Create an Airtable Account:** If you don't have one, sign up at [airtable.com](https://airtable.com).
+2.  **Create a New Base:** Start a new base from scratch.
+3.  **Create the Required Tables:** You must create the following tables with the exact names and fields specified below. The field type in Airtable is shown in parentheses.
 
 ---
 
-### **2. Updating Page Content**
+#### **Table 1: `SiteSettings`**
+*This table should have exactly one record.*
+- `key` (Single line text) - The primary field. Enter `settings`.
+- `backgroundPattern` (Single select) - Options: `crosses`, `dots`, `none`.
+- `brandColor` (Single line text) - Enter a hex color code, e.g., `#8AF003`.
 
-The `content.json` file is organized into sections that match the sections of the website. Here's how to edit each part:
+---
 
-#### **Updating the Portfolio Images (Scrolling Section)**
-- Find the `portfolioMarquee` section in `content.json`.
-- Edit the `images` array. Each item in the array is a URL for an image that will appear in the scrolling showcase.
-- You can add, remove, or change the image URLs in this list.
+#### **Table 2: `PageContent`**
+*This table should have exactly one record.*
+- `key` (Single line text) - The primary field. Enter `main`.
+- `portfolioTitle` (Single line text) - e.g., `A Glimpse of My Work`
+- `pricingTitle` (Single line text) - e.g., `Simple, Transparent Pricing`
+- `pricingSubtitle` (Long text) - e.g., `Start with a free homepage, then choose a plan...`
+- `testimonialsTitle` (Single line text) - e.g., `Hear From My Happy Clients`
+- `faqTitle` (Single line text) - e.g., `Frequently Asked Questions`
+- `faqSubtitle` (Long text) - e.g., `Have questions? I've got answers...`
 
-#### **Updating Pricing Plans**
-- Find the `pricing` section, then the `plans` array.
-- Each object is a pricing card. You can edit the `name`, `price`, `features`, and `notIncluded` lists.
-- **Important:** The `value` property (e.g., "1500-2500") links the plan to the form's budget dropdown. It should match an option in the form.
+---
 
-#### **Updating Client Testimonials (Scrolling Section)**
-- Find the `pricing` section, then the `testimonials` array.
-- Each object is a quote in the scrolling marquee. Add, edit, or remove objects here.
+#### **Table 3: `PortfolioImages`**
+*Each record is one image in the portfolio marquee.*
+- `url` (URL) - The primary field. Paste the direct URL to your image.
+- `order` (Number) - A number to set the display order (e.g., 1, 2, 3...).
 
-#### **Updating the FAQ Section**
-- Find the `faq` section, then the `items` array.
-- Each object has a `question` and `answer`. Edit them here.
+---
 
-#### **Updating Contact Information**
-- Find the `contact` section.
-- You can directly edit the `title`, `subtitle`, `email`, and `phone` text.
-- To update the **WhatsApp** button, edit the `whatsappNumber` and `whatsappPrefill` fields. The number should not contain spaces or symbols (e.g., `27734422054`).
-- There is also an optional `secondaryEmail` field. If you add it, it will appear on the site. If you remove it, it will disappear automatically.
-- The `hours` can also be edited here. You can use `<strong>` tags for bold text.
+#### **Table 4: `PricingPlans`**
+*Each record is a pricing card.*
+- `name` (Single line text) - The primary field (e.g., `🚀 STARTER SITE`).
+- `price` (Single line text) - e.g., `R1,500 - R2,500`.
+- `features` (Long text) - List each feature on a new line.
+- `notIncluded` (Long text) - List each item on a new line.
+- `isFeatured` (Checkbox) - Check this for the recommended plan.
+- `value` (Single line text) - A value for the form (e.g., `free`, `1500-2500`).
+- `order` (Number) - The display order for the plans.
+
+---
+
+#### **Table 5: `Testimonials`**
+*Each record is a client testimonial.*
+- `author` (Single line text) - The primary field. The person's name.
+- `quote` (Long text) - The full quote.
+- `location` (Single line text) - e.g., `Ndlovu's Fine Meats, Soweto`.
+- `order` (Number) - The display order.
+
+---
+
+#### **Table 6: `FAQ`**
+*Each record is one question-and-answer pair.*
+- `question` (Single line text) - The primary field. The full question.
+- `answer` (Long text) - The full answer.
+- `order` (Number) - The display order.
+
+---
+
+#### **Table 7: `Contact`**
+*This table should have exactly one record.*
+- `key` (Single line text) - The primary field. Enter `contactInfo`.
+- `title` (Single line text) - e.g., `Get in Touch`.
+- `subtitle` (Long text)
+- `email` (Email)
+- `secondaryEmail` (Email) - *Optional*.
+- `phone` (Phone number)
+- `whatsappNumber` (Single line text) - Numbers only, with country code. e.g., `27734422054`.
+- `whatsappPrefill` (Single line text) - The default message for WhatsApp.
+- `hoursLine1` (Single line text) - Supports `<strong>` tags for bold text.
+- `hoursLine2` (Single line text)
+- `hoursLine3` (Single line text)
+
+---
+
+### **Step 2: Get Your Airtable Credentials**
+
+1.  **Find your Base ID:**
+    - Go to [airtable.com/api](https://airtable.com/api).
+    - Select the base you just created.
+    - The Base ID starts with `app...` and is shown in the introduction section.
+
+2.  **Generate a Personal Access Token (API Key):**
+    - Go to your Airtable [developer hub](https://airtable.com/create/tokens).
+    - Click "Create new token".
+    - **Name:** Give it a name like "Godigi Agency Website".
+    - **Scopes:** Add the `data.records:read` scope. This is crucial for security, as it only allows reading data.
+    - **Access:** Select the base you created.
+    - Click "Create token" and copy the key. **Save it somewhere safe.**
+
+### **Step 3: Deploy to Vercel (or similar)**
+
+1.  Push the project code to a GitHub/GitLab repository.
+2.  Create a new project on Vercel and import the repository.
+3.  **Add Environment Variables:**
+    - In your Vercel project settings, go to "Environment Variables".
+    - Add two variables:
+      - `AIRTABLE_BASE_ID`: Paste the Base ID you copied.
+      - `AIRTABLE_API_KEY`: Paste the Personal Access Token you created.
+4.  Deploy! Your website should now be live and fetching content directly from your Airtable base.
+
+### **Important: Image Optimization for Speed**
+
+Before adding images to Airtable, **compress them**. Large images are the biggest cause of slow websites.
+
+1.  **Compress:** Use a free online tool like [TinyPNG](https://tinypng.com/) or [Squoosh](https://squoosh.app/) to reduce file size.
+2.  **Resize:** Resize images to be close to their final display size (e.g., 800px wide for portfolio images).
 
 ---
 
 ### **Dark Mode**
 
-This website includes a full Dark Mode feature.
-- It will automatically respect the user's operating system setting (Light or Dark).
-- A toggle button is available in the footer for users to manually switch between Light, Dark, and System modes.
-- The user's preference is saved in their browser, so it will be remembered on their next visit.
-
----
-
-### **Important: Image Optimization for Speed**
-
-Before adding images to `content.json`, it is **highly recommended** to optimize them. Large images are the biggest cause of slow websites.
-
-1.  **Compress Your Images:** Use a free online tool like [TinyPNG](https://tinypng.com/) or [Squoosh](https://squoosh.app/) to dramatically reduce the file size of your images without losing quality.
-2.  **Use the Right Format:** Use `.jpg` for photographs and `.png` for graphics with transparency. Consider modern formats like `.webp` if you are comfortable with them.
-3.  **Resize Your Images:** Don't upload a 4000px wide photo if it will only be displayed at 400px wide. Resize images to be close to their final display size.
-
-This simple step will ensure your website remains fast and provides a great user experience.
-
----
-
-## File Structure
-
-Here is a brief overview of the key files in the project:
-
-- `index.html`: The main HTML file and entry point for the app.
-- `content.json`: **Your main content control panel.** All user-facing text and images are here.
-- `index.tsx`: Mounts the React application.
-- `App.tsx`: The main component that structures the page layout and passes content from `content.json` to other components.
-- `types.ts`: Contains shared TypeScript type definitions for clean code.
-- `/components`: This directory contains all the React components that make up the website. They are "presentational," meaning they just display the data they are given.
-  - `Header.tsx`: The main hero section.
-  - `PortfolioMarquee.tsx`: The scrolling portfolio image showcase.
-  - `PricingStrategy.tsx`: The pricing grid and scrolling testimonials.
-  - `LeadForm.tsx`: The main contact and lead generation form.
-  - `FAQ.tsx`: The frequently asked questions section.
-  - `Contact.tsx`: The "Get in Touch" card.
-  - `IconComponents.tsx`: A library of SVG icons.
-  - `BackToTopButton.tsx`: A button that appears on scroll to return the user to the top.
-
-**Note on Accessibility:** This project includes accessibility enhancements, such as pausing animations for users who have `prefers-reduced-motion` enabled in their system settings.
+This website includes a full Dark Mode feature. It will respect the user's OS setting, and a toggle button is in the footer for manual control. The user's preference is saved in their browser.
