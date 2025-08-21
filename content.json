@@ -1,0 +1,161 @@
+{
+  "siteSettings": {
+    "backgroundPattern": "crosses",
+    "brandColor": "#8AF003"
+  },
+  "portfolioMarquee": {
+    "title": "A Glimpse of My Work",
+    "images": [
+      "https://elements-resized.envatousercontent.com/elements-cover-images/92604ba1-6763-478a-975b-5ccc84d1abea?w=2038&cf_fit=scale-down&q=85&format=auto&s=85542028f7ba9fbdb036db29d2fc2ce92148318e205e004b32c76cd186b75d0",
+      "https://elements-resized.envatousercontent.com/elements-cover-images/2aa96677-8c32-40dd-b507-c2fd8085ab0b?w=2038&cf_fit=scale-down&q=85&format=auto&s=879057ca8b860a3b1d516bb67bc246c41e4d56e7503e0e8c7360c10e6209f13d",
+      "https://elements-resized.envatousercontent.com/elements-cover-images/1b18d096-8b8c-47e8-9ffb-347b1a7b5472?w=2038&cf_fit=scale-down&q=85&format=auto&s=f743136197e4828a93e75490fde45029c69d44f429a579dd67e245d8becd22d3",
+      "https://elements-resized.envatousercontent.com/elements-template-kits-cover-images/files/559958011/Cover%20Image%20-%20Consultry.jpg?w=710&cf_fit=scale-down&q=85&format=auto&s=43f52b411abd4e894c106426e9c730f4e31e65876e2c4c7df772f3078d962111",
+      "https://elements-resized.envatousercontent.com/elements-template-kits-cover-images/files/639826727/Cover%20Image.jpg?w=710&cf_fit=scale-down&q=85&format=auto&s=06b64feca39f87d8feaa290ece5f1bbe0a38163389dea4545f04269de28293e7",
+      "https://elements-resized.envatousercontent.com/elements-template-kits-cover-images/files/560092989/Cover%20Image%20-%20UPDATE.jpg?w=710&cf_fit=scale-down&q=85&format=auto&s=b6fc2026c2250e8752b9cdf3a1228d2bc5091dd67dba2c8f1c6bc8d7a01f1fdd",
+      "https://elements-resized.envatousercontent.com/elements-template-kits-cover-images/files/559123076/Cover%20Image.jpg?w=710&cf_fit=scale-down&q=85&format=auto&s=a9c237a4b5e2bcc232d116ff0e6c1630f79279d1baca9ead30eaf93607efa814",
+      "https://elements-resized.envatousercontent.com/elements-template-kits-cover-images/files/561372854/Cover%20Image.jpg?w=710&cf_fit=scale-down&q=85&format=auto&s=daf48a831a2f9c967a52793835d4bb549caf84649e413885e43a08c23bafb84f",
+      "https://elements-resized.envatousercontent.com/elements-template-kits-cover-images/files/643248303/Cover%20Image.jpg?w=710&cf_fit=scale-down&q=85&format=auto&s=e77f11df92928792d1b010970107cd8b17218a6745c75d029bc6fa9ec42206cb",
+      "https://elements-resized.envatousercontent.com/elements-template-kits-cover-images/files/568605891/Preview.jpg?w=710&cf_fit=scale-down&q=85&format=auto&s=46f663613f9a43f2bf7c5934a4e1524de75f02529307ddd22a237cb59562eb1f",
+      "https://elements-resized.envatousercontent.com/elements-template-kits-cover-images/files/537632905/Cover%20Template%20Kit.jpg?w=710&cf_fit=scale-down&q=85&format=auto&s=e2526b51b72b7b40a43b26eb8f89aeed06bcd0beed3d41d5c4b867760b2103b9",
+      "https://elements-resized.envatousercontent.com/elements-template-kits-cover-images/files/444092752/cover.png?w=710&cf_fit=scale-down&q=85&format=auto&s=63ac92bdc296f76c5eeee4fd5f465e04d8ffa34a32b691cd3818db478e5686df"
+    ]
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Start with a free homepage, then choose a plan that fits your business as you grow. No hidden fees, ever.",
+    "plans": [
+      {
+        "name": "🎣 FREE HOMEPAGE",
+        "price": "R0",
+        "features": [
+          "Professional 1-Page Design",
+          "Includes Intro, Services, & Contact Info",
+          "Mobile-First Responsive Layout",
+          "Click-to-Call/Email Buttons",
+          "Clear Call-to-Action (e.g. 'Contact Us')",
+          "SEO-Ready Foundation (On-page basics)",
+          "Delivered in 4-8 hours"
+        ],
+        "notIncluded": [
+          "Custom Domain & Hosting Setup",
+          "Content Writing & Image Sourcing",
+          "Multiple Pages or Revisions"
+        ],
+        "value": "free"
+      },
+      {
+        "name": "🚀 STARTER SITE",
+        "price": "R1,500 - R2,500",
+        "features": [
+          "Everything in Free, plus:",
+          "Up to 5 Pages (e.g. Services, About, Contact)",
+          "Custom Contact Form",
+          "Interactive Google Maps Integration",
+          "Google Business Profile Setup & Optimization",
+          "Basic Website Speed Optimization",
+          "1 Month of Minor Content Updates"
+        ],
+        "notIncluded": [
+          "Advanced SEO or E-commerce",
+          "Logo Design / Full Branding",
+          "Ongoing Monthly Maintenance"
+        ],
+        "isFeatured": true,
+        "value": "1500-2500"
+      },
+      {
+        "name": "🔥 BUSINESS GROWTH",
+        "price": "R3,000 - R4,500",
+        "features": [
+          "Everything in Starter, plus:",
+          "Photo & Video Gallery Showcase",
+          "Live Social Media Feed Integration",
+          "WhatsApp 'Click-to-Chat' Widget",
+          "Customer Testimonials Carousel",
+          "Google Analytics Setup for Visitor Insights",
+          "3 Months of Priority Support & Updates"
+        ],
+        "notIncluded": [
+          "Paid Ad Campaign Management",
+          "Professional Photography/Videography",
+          "Custom Feature Development"
+        ],
+        "value": "2500-4000"
+      }
+    ],
+    "testimonials": {
+        "title": "Hear From My Happy Clients",
+        "items": [
+            {
+                "quote": "I was skeptical about the 'free' offer, but the homepage Benjamin delivered was better than what I paid another agency for last year. We immediately upgraded. Highly recommended!",
+                "author": "Thabo Ndlovu",
+                "location": "Ndlovu's Fine Meats, Soweto"
+            },
+            {
+                "quote": "The speed is unbelievable. Having a professional starting point in just a few hours gave us the confidence to finally get our business online properly. The process was seamless.",
+                "author": "Brenda Fischer",
+                "location": "Fischer's Accounting, Durban"
+            },
+            {
+                "quote": "As a small guesthouse owner, I didn't have a big budget. This free homepage was a lifesaver. It looks amazing on mobile and has already brought in new bookings.",
+                "author": "Fatima Patel",
+                "location": "Coastal Comfort B&B, Cape Town"
+            },
+            {
+                "quote": "Finally, a developer who gets it. No jargon, just results. The free page was the perfect, risk-free way to see the quality of work. I'm now getting a full e-commerce build.",
+                "author": "Chris Botha",
+                "location": "Botha's Biltong, Pretoria"
+            },
+            {
+                "quote": "Benjamin is top-notch. He listened to my needs and delivered a homepage that perfectly captures my brand. The leads started coming in right away.",
+                "author": "Linda Zulu",
+                "location": "Zulu Legal Experts, Johannesburg"
+            }
+        ]
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Have questions? I've got answers. Here are some of the most common things people ask.",
+    "items": [
+      {
+        "question": "What's the catch with the 'Free Homepage'?",
+        "answer": "There's no catch. I build you a high-quality, professional homepage to demonstrate my skills and earn your trust. If you love it, you can choose to upgrade to a full multi-page website. If not, there's absolutely no cost or obligation."
+      },
+      {
+        "question": "Do I need to provide my own content and images?",
+        "answer": "For the free homepage, I'll use placeholder content and high-quality stock images if you don't have your own. For a full website project, I recommend providing your own content and photos to best represent your brand, but I can also help with copywriting and image sourcing as an additional service."
+      },
+      {
+        "question": "What about a domain name and web hosting?",
+        "answer": "A domain name (e.g., yourbusiness.co.za) and web hosting are not included in the free homepage offer. When you decide to move forward with a full website, I can guide you through the process of purchasing them. They are essential for making your site live on the internet."
+      },
+      {
+        "question": "How long does a full website take to build?",
+        "answer": "Once I have all your content, a 'Starter Site' typically takes 5-7 business days, and a 'Business Growth' site takes 7-14 business days. The timeline can vary depending on the complexity and the speed of feedback."
+      },
+      {
+        "question": "What happens after my support period ends?",
+        "answer": "After your included support period, you can easily make simple text and image changes yourself. For peace of mind, I also offer affordable monthly website care plans that include hosting, security, backups, and ongoing support."
+      },
+      {
+        "question": "Can you help with a logo and branding?",
+        "answer": "Absolutely! While not included in the standard website packages, I offer separate branding and logo design services to help create a cohesive and professional look for your business both online and offline."
+      }
+    ]
+  },
+  "contact": {
+      "title": "Get in Touch",
+      "subtitle": "I'm based virtually and serve clients everywhere. Have a specific question? I'd love to hear from you.",
+      "email": "hello@godigi.agency",
+      "secondaryEmail": "ben.godigi@gmail.com",
+      "phone": "(+27) 073 4422 054",
+      "whatsappNumber": "27734422054",
+      "whatsappPrefill": "Hello! I'm interested in your web design services.",
+      "hours": {
+          "line1": "Mon - Thurs: <strong>9am - 6pm</strong>",
+          "line2": "Friday: <strong>9am - 3pm</strong>",
+          "line3": "Weekends: Closed (emergencies only)"
+      }
+  }
+}

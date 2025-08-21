@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link id="favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cpath fill='%238AF003' d='M50 0a50 50 0 00-50 50 50 50 0 0050 50 50 50 0 0050-50A50 50 0 0050 0zm0 8.33a41.67 41.67 0 0141.67 41.67 41.67 41.67 0 01-41.67 41.67A41.67 41.67 0 018.33 50 41.67 41.67 0 0150 8.33z'/%3e%3cpath fill='%231F2937' d='M50 16.67a33.33 33.33 0 00-33.33 33.33 33.33 33.33 0 0033.33 33.33 33.33 33.33 0 0033.33-33.33A33.33 33.33 0 0050 16.67zm0 8.33a25 25 0 0125 25 25 25 0 01-25 25 25 25 0 01-25-25 25 25 0 0125-25z'/%3e%3cpath fill='%23F9FAFB' d='M50 33.33a16.67 16.67 0 00-16.67 16.67 16.67 16.67 0 0016.67 16.67 16.67 16.67 0 0016.67-16.67A16.67 16.67 0 0050 33.33z'/%3e%3c/svg%3e">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>godigi.agency | Free Homepage Offer</title>
+
+    <!-- 
+      PRE-DEPLOYMENT CHECKLIST:
+      1. Update the href below to your final domain name.
+      2. Upload a preview image (1200x630px) and update the two placeholder URLs below.
+    -->
+    <meta name="author" content="godigi.agency">
+    <link rel="canonical" href="https://[YOUR-DOMAIN-HERE]/" />
+    <link rel="preconnect" href="https://esm.sh" crossorigin>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://[YOUR-DOMAIN-HERE]/">
+    <meta property="og:title" content="godigi.agency | Get a Stunning, Free Homepage">
+    <meta property="og:description" content="The perfect, risk-free start for your business. I build your high-converting homepage in hours to prove my value.">
+    <meta property="og:image" content="https://[YOUR-PREVIEW-IMAGE-URL-HERE]">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://[YOUR-DOMAIN-HERE]/">
+    <meta property="twitter:title" content="godigi.agency | Get a Stunning, Free Homepage">
+    <meta property="twitter:description" content="The perfect, risk-free start for your business. I build your high-converting homepage in hours to prove my value.">
+    <meta property="twitter:image" content="https://[YOUR-PREVIEW-IMAGE-URL-HERE]">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- This style enables smooth scrolling and sets a default background color -->
+    <style>
+      html { scroll-behavior: smooth; }
+      body {
+        background-color: #f9fafb; /* Tailwind's bg-gray-50 */
+        color: #1f2937; /* Tailwind's text-gray-800 */
+      }
+      .dark body {
+        background-color: #030712; /* A very dark gray, almost black */
+        color: #d1d5db; /* Tailwind's text-gray-300 */
+      }
+      /* Accessibility: Pause animations for users who prefer reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        *, ::before, ::after {
+          animation-delay: -1ms !important;
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          background-attachment: initial !important;
+          scroll-behavior: auto !important;
+          transition-delay: 0s !important;
+          transition-duration: 0s !important;
+        }
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: 'class', // This enables class-based dark mode
+        theme: {
+          extend: {
+            colors: {
+                brand: 'var(--brand-color, #8AF003)', // Default fallback color
+            },
+            animation: {
+              'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
+              'slide-down': 'slide-down 0.3s ease-out forwards',
+              'scroll': 'scroll 80s linear infinite',
+              'spin-slow': 'spin 10s linear infinite',
+              'bob': 'bob 2s ease-in-out infinite',
+            },
+            keyframes: {
+              'fade-in-up': {
+                '0%': {
+                  opacity: '0',
+                  transform: 'translateY(20px)'
+                },
+                '100%': {
+                  opacity: '1',
+                  transform: 'translateY(0)'
+                },
+              },
+              'slide-down': {
+                  'from': { opacity: 0, transform: 'translateY(-10px)' },
+                  'to': { opacity: 1, transform: 'translateY(0)' },
+              },
+              'scroll': {
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(-50%)' },
+              },
+              'bob': {
+                '0%, 100%': { transform: 'translateY(-10%)' },
+                '50%': { transform: 'translateY(10%)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/client": "https://esm.sh/react-dom@^19.1.1/client",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "react/": "https://esm.sh/react@^19.1.1/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
