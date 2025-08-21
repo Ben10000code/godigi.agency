@@ -7,23 +7,28 @@ export const config = {
 };
 
 // Helper to fetch and parse a single table from Airtable.
-// This runs on the server, not the browser.
-const fetchAirtableTable = async (tableName: string, baseId: string, apiKey: string) => {
-    // We add sorting parameters to ensure content is ordered correctly based on the 'order' field in Airtable.
-    const sortParam = 'sort%5B0%5D%5Bfield%5D=order&sort%5B0%5D%5Bdirection%5D=asc';
-    const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableName}?${sortParam}`, {
+// Now includes optional sorting and improved error reporting.
+const fetchAirtableTable = async (tableName: string, baseId: string, apiKey: string, sort: boolean = false) => {
+    let url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
+    if (sort) {
+        // Add sorting parameters to ensure content is ordered correctly based on the 'order' field in Airtable.
+        url += '?sort%5B0%5D%5Bfield%5D=order&sort%5B0%5D%5Bdirection%5D=asc';
+    }
+    const res = await fetch(url, {
         headers: { Authorization: `Bearer ${apiKey}` }
     });
+
     if (!res.ok) {
-        // Log the detailed error from Airtable for better debugging
-        const errorBody = await res.text();
-        console.error(`Airtable fetch error for table ${tableName}: ${res.status} ${res.statusText}`, errorBody);
-        throw new Error(`Failed to fetch ${tableName}`);
+        const errorBody = await res.json().catch(() => ({ error: { message: `Airtable returned a non-JSON error: ${res.statusText}` } }));
+        const airtableErrorMessage = errorBody?.error?.message || errorBody?.error || `HTTP ${res.status} ${res.statusText}`;
+        console.error(`Airtable fetch error for table ${tableName}: ${airtableErrorMessage}`);
+        // This more detailed error message will be passed to the frontend.
+        throw new Error(`Failed to fetch '${tableName}'. Reason: ${airtableErrorMessage}`);
     }
     const data = await res.json();
-    // We only need the 'fields' object from each record.
     return data.records.map((rec: any) => rec.fields);
 };
+
 
 export default async function handler(request: Request) {
     const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
@@ -38,13 +43,19 @@ export default async function handler(request: Request) {
     }
     
     try {
-        const tableNames = ['SiteSettings', 'PageContent', 'PortfolioImages', 'PricingPlans', 'Testimonials', 'FAQ', 'Contact'];
-        
-        // Fetch all tables in parallel for maximum efficiency.
+        // Fetch all tables in parallel, specifying which ones need to be sorted by the 'order' field.
         const [
             siteSettingsRecs, pageContentRecs, portfolioImagesRecs, pricingPlansRecs,
             testimonialsRecs, faqRecs, contactRecs
-        ] = await Promise.all(tableNames.map(table => fetchAirtableTable(table, AIRTABLE_BASE_ID, AIRTABLE_API_KEY)));
+        ] = await Promise.all([
+            fetchAirtableTable('SiteSettings', AIRTABLE_BASE_ID, AIRTABLE_API_KEY, false),
+            fetchAirtableTable('PageContent', AIRTABLE_BASE_ID, AIRTABLE_API_KEY, false),
+            fetchAirtableTable('PortfolioImages', AIRTABLE_BASE_ID, AIRTABLE_API_KEY, true),
+            fetchAirtableTable('PricingPlans', AIRTABLE_BASE_ID, AIRTABLE_API_KEY, true),
+            fetchAirtableTable('Testimonials', AIRTABLE_BASE_ID, AIRTABLE_API_KEY, true),
+            fetchAirtableTable('FAQ', AIRTABLE_BASE_ID, AIRTABLE_API_KEY, true),
+            fetchAirtableTable('Contact', AIRTABLE_BASE_ID, AIRTABLE_API_KEY, false),
+        ]);
 
         // Extract the single records from tables that are expected to have only one row.
         const siteSettings = siteSettingsRecs[0];
